@@ -11,5 +11,4 @@ valoresDigitados (head:tail) = do
 	valoresDigitados tail
 
 resultado [] palabra =  print palabra
-resultado (head:tail) palabra = do
-	if head /= palabra then resultado tail palabra else return ()
+resultado (head:tail) palabra = if head /= palabra then resultado tail palabra else return ()
