@@ -18,9 +18,3 @@ valoresDigitados (head:tail) = do
 resultado [] palabra = return ()
 resultado (head:tail) palabra = do
 	if  head /= palabra then resultado tail palabra else print palabra
-
-	
-	
-	
-	
-	
