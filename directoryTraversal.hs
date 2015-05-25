@@ -29,7 +29,7 @@ getRecursiveContents topPath = do
 main = do
   [path] <- getArgs
   --let extensiones = [".h",".pch",".c",".hpp","cpp",".java","js",".make",".txt",".pl",".o",".hi"]
-  contenido <- readFile "extencionesDeTextoSimple.txt"
+  contenido <- readFile "extensionesTexto.txt"
   files <- unsafeInterleaveIO $ getRecursiveContents path
   forM_ files $ \file -> evaluar (lines contenido) path file 	
 
