@@ -1,0 +1,7 @@
+23
+Hola soy Esteban Vargas Mora
+hola.c
+.cpp
+hola.cp
+hola.hs
+/0
