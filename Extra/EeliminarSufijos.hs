@@ -12,3 +12,10 @@ esSufijo (cabesa : cola) elemento =
   if isSuffixOf cabesa elemento
   then True
   else esSufijo cola elemento
+
+
+noExisteEn [] elemento = True
+noExisteEn (cabesa : cola) elemento =
+  if cabesa == elemento
+  then False
+  else noExisteEn cola elemento
