@@ -60,7 +60,7 @@ insertInTrie trie (head : tail)
 	| verifyNode trie head = (getNode trie head) {element = element (getNode trie head), path = path (getNode trie head), childrens = (insertInTrie (childrens (getNode trie head)) tail)} : (ignoreNode trie head)
 	| otherwise = insertInTrie (insertNode trie head) (head : tail) 
 	
--- Función que buscaen la totalidad del trie y devuele el nodo asociado al "string" que se me ha soliditado. En caso de no encontrar nada
+-- Función que busca en la totalidad del trie y devuele el nodo asociado al "string" que se me ha soliditado. En caso de no encontrar nada
 -- devuelve un nodo vacio.
 searchNode :: Trie -> [Char] -> Node
 searchNode trie [letter]

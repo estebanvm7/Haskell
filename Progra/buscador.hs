@@ -1,13 +1,8 @@
 module Main where
 
 import Data.List
-import System.FilePath.Posix
-import Control.Monad ( forM, forM_, liftM )
-import Debug.Trace ( trace )
-import System.Directory ( doesDirectoryExist, getDirectoryContents )
+import Control.Monad ( mapM_)
 import System.Environment ( getArgs )
-import System.FilePath ( (</>) )
-import System.IO.Unsafe ( unsafeInterleaveIO )
 import Trie
 
 join :: [String] -> Trie -> [String]
@@ -19,4 +14,5 @@ main = do
   input <- readFile "trie.txt"
   let trie = read input :: [Node]
   let node = join arg trie
-  print (node)
+  mapM_ putStrLn node
+
