@@ -72,7 +72,7 @@ main = do
   files <- unsafeInterleaveIO $ getRecursiveContents path
   let listaPath = filtrar files palabras
   let trie = crearTrie vacio listaPath stop
-  writeFile "trie.txt" (show trie)
+  writeFile "/home/.indice" (show trie)
   stop <- getCurrentTime
   print $ diffUTCTime stop start
 
