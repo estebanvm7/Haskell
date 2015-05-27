@@ -78,3 +78,22 @@ addPathToNode trie [letter] dir
 addPathToNode trie (head : tail) dir
 	| verifyNode trie head = (getNode trie head) { element = element (getNode trie head), path = path (getNode trie head), childrens = addPathToNode (childrens (getNode trie head)) tail dir } : (ignoreNode trie head)
 	| otherwise = trie
+
+contains :: Trie -> [Char] -> Bool
+contains trie [] = True
+contains trie (head : tail)
+	| verifyNode trie head = True && contains (childrens (getNode trie head)) tail
+	| otherwise = False
+
+containsPath :: Trie -> [Char] -> String -> Bool
+containsPath trie [] directory = False
+containsPath trie (head : tail) directory
+ 	| noExisteEn (path (getNode trie head)) directory = containsPath (childrens(getNode trie head)) tail directory
+ 	| otherwise = True
+
+
+noExisteEn [] elemento = True
+noExisteEn (cabeza : cola) elemento =
+  if cabeza == elemento
+  then False
+  else noExisteEn cola elemento 

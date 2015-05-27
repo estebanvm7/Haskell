@@ -33,58 +33,56 @@ esSufijo (cabeza : cola) elemento =
 filtrar :: [FilePath] -> [String] -> [[Char]]
 filtrar files ext = filter (\x -> esSufijo ext x) files
 
-noExisteEn [] elemento = True
-noExisteEn (cabeza : cola) elemento =
-  if cabeza == elemento
-  then False
-  else noExisteEn cola elemento 
+--noExisteEn [] elemento = True
+--noExisteEn (cabeza : cola) elemento =
+--  if cabeza == elemento
+ -- then False
+ -- else noExisteEn cola elemento 
  
---iterar :: [String] -> [String] -> Trie -> Trie
---iterar [] stop trie = trie
---iterar (head : tail) stop trie = do
---  let tiene = abrirArchivo head
---  let filtrados = archivoFiltrado tiene stop
---  let arbol = map (\x -> insertInTrie trie x) filtrados
-  --let arbol2 = map (\x -> addPathToNode arbol x head) filtrados
---  return (iterar tail stop arbol)
-   
+insertar :: [String] -> Trie -> Trie
+insertar [] trie = trie
+insertar (cabeza:cola) trie     
+  | contains trie cabeza = insertar cola trie
+  | otherwise = insertar cola (insertInTrie trie cabeza)
+
+agregarRuta :: [String] -> String -> Trie -> Trie
+agregarRuta [] ruta trie = trie
+agregarRuta (cabeza : cola) ruta trie 
+  | containsPath trie cabeza ruta = agregarRuta cola ruta trie 
+  | otherwise = agregarRuta cola ruta (addPathToNode trie cabeza ruta)
+
+--crearTrie :: Trie -> [String] -> Trie
+--crearTrie trie [] = trie
+--crearTrie trie (cabeza : cola)
+--  | 
+--  | otherwise
+
 abrirArchivo ruta = do
   contenido <- readFile ruta
   let lista = words contenido
-  return (lista)
+  return $ show lista
   
 archivoFiltrado :: [String] -> [String] -> [String]  
 archivoFiltrado [] stop = []
 archivoFiltrado lista stop =  filter (\x -> noExisteEn stop x) lista
  
-
 main = do
-  let a = empty
-  --[path] <- getArgs
-  --contenido <- readFile "extensionesTexto.txt"
-  --stopWords <- readFile "Stopwords.txt"
-  --let palabras = words contenido 
-  --let stop = words stopWords
-  --files <- unsafeInterleaveIO $ getRecursiveContents path
-  --let listaPath = filtrar files palabras
-  --let lista =  ["hola","como","esta", "yolo"]
-  --let algo = filter (\x -> noExisteEn stop x) lista 
-  --let trie = iterar listaPath stop trieVacio
-  --trie <- abrirArchivo "/home/mauricio/Escritorio/Lenguajes/source/verbos.txt" 
-  --let archi = archivoFiltrado trie stop
-  --let trie = iterar listaPath stop trieVacio
-  --trie <- abrirArchivo "/home/mauricio/Escritorio/Lenguajes/source/verbos.txt" 
-  --let a = archivoFiltrado trie stop
-  let b = insertInTrie a "a"
-  let c = insertInTrie b "aca"
-  let d = insertInTrie c "acaba"
-  let e = insertInTrie d "acabado"
-  let f = insertInTrie e "acabarias"  
-  let g = insertInTrie f "acasias"
-  let h = addPathToNode g "acasias" "/home/mauricio/acasias.txt"
-  let j = addPathToNode h "acabado" "/home/mauricio/acasias.txt"
-  let l = addPathToNode j "acabado" "/home/mauricio/repetido.hs"
+  let vacio = empty
+  [path] <- getArgs
+  contenido <- readFile "extensionesTexto.txt"
+  stopWords <- readFile "Stopwords.txt"
+  let palabras = words contenido 
+  let stop = words stopWords
+  files <- unsafeInterleaveIO $ getRecursiveContents path
+  let listaPath = filtrar files palabras
+
   
-  writeFile "trie.txt" (show l)
-  --print (listaPath)
+
+  archivo <- map (\x -> abrirArchivo x) listaPath
+  let archivoFiltrado = archivoFiltrado archivo stop
+  let trie1 = map (\x -> insertar x vacio) archivoFiltrado
+  --let x = insertar ["abc","acb","vcx"] a
+  --let z = agregarRuta ["abc","ac","vc"] "/home/mauricio/repetido.hs" x
+  writeFile "trie.txt" (show trie1)
+  return (0)
 
