@@ -5,8 +5,6 @@ import Control.Monad ( mapM_)
 import System.Environment ( getArgs )
 import Trie
 
---Buscar Elemento
---Busca el argumento dentro del arbol Trie
 search :: [String] -> Trie -> [String]
 search [a] trie = (path (searchNode trie a))
 search (head : tail) trie = intersect (path (searchNode trie head)) (search tail trie) 

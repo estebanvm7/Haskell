@@ -70,11 +70,11 @@ main = do
   stopWords <- readFile "Stopwords.txt"
   let palabras = words contenido 
   let stop = words stopWords
-  forkIO $ do
-  	files <- unsafeInterleaveIO $ ficherosRecursivos path
-  	let listaPath = filtrar files palabras
-  	let trie = crearTrie vacio listaPath stop
-  	writeFile "/home/.indice" (show trie)
+  --forkIO $ do
+  files <- unsafeInterleaveIO $ ficherosRecursivos path
+  let listaPath = filtrar files palabras
+  let trie = crearTrie vacio listaPath stop
+  writeFile "/home/.indice" (show trie)
   stop <- getCurrentTime
   print $ diffUTCTime stop start
 
