@@ -1,7 +1,7 @@
-module Trie where
+module Trie where 
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- Creación de un nodo del arbol trie.
--- Este contiene la siguiente información:
+-- Este contiene la siguiente información: 
 --				- Un char que contiene identificador del nodo
 --				- Una lista de rutas. Estas son de la forma "/directorio1/directorio2/..."
 --				- Una lista de nodos en representación de los nodos hijos del nodo actual (padre)
@@ -33,7 +33,7 @@ findNodeAux (head:tail) letter acum
 
 -- Función que identifica en la lista de nodos, la posición del nodo que estoy buscando, en un nivel en especifico del trie
 findNode :: Trie->Char->Int
-findNode trie letter = findNodeAux trie letter 0
+findNode trie letter = findNodeAux trie letter 0 
 
 -- Función que me retorna el nodo en especifico que estoy utilisando, en un nivel en especifico del trie
 getNode :: Trie->Char->Node
@@ -45,24 +45,26 @@ ignoreNode trie letter = filter (\x -> element x /= letter) trie
 
 --  Función que modifica un nodo, agregandole una nueva ruta a su lista personal
 addPath :: Node -> String -> Node
-addPath node dir = (node {element = element node, path = (dir : path node), childrens = childrens node })
+addPath node dir = (node {element = element node, path = (dir : path node), childrens = childrens node }) 
 
 -- Función que toma un nodo hijo y se lo inserta a un nodo padre en particular
 --addSubPath :: Node -> Node -> Node
---addSubPath father son = (father {element = element father, path = path father, childrens = (son : childrens father) })
+--addSubPath father son = (father {element = element father, path = path father, childrens = (son : childrens father) }) 
 
 -- Función que inserta en un trie varios nodos correspondientes al "string" que estoy tratando de mapear al trie
 insertInTrie :: Trie -> [Char] -> Trie
+insertInTrie trie [] = trie
 insertInTrie trie [letter]
-	| verifyNode trie letter = trie
+	| verifyNode trie letter = trie 
 	| otherwise = insertNode trie letter
-insertInTrie trie (head : tail)
+insertInTrie trie (head : tail) 
 	| verifyNode trie head = (getNode trie head) {element = element (getNode trie head), path = path (getNode trie head), childrens = (insertInTrie (childrens (getNode trie head)) tail)} : (ignoreNode trie head)
-	| otherwise = insertInTrie (insertNode trie head) (head : tail)
-
--- Función que busca en la totalidad del trie y devuele el nodo asociado al "string" que se ha soliditado. En caso de no encontrar nada
+	| otherwise = insertInTrie (insertNode trie head) (head : tail) 
+	
+-- Función que busca en la totalidad del trie y devuele el nodo asociado al "string" que se me ha soliditado. En caso de no encontrar nada
 -- devuelve un nodo vacio.
 searchNode :: Trie -> [Char] -> Node
+searchNode trie [] = (Node {element = ' ', path = [], childrens = []})
 searchNode trie [letter]
 	| verifyNode trie letter = getNode trie letter
 	| otherwise = (Node {element = ' ', path = [], childrens = []})
@@ -70,32 +72,37 @@ searchNode trie (head : tail)
 	| verifyNode trie head = searchNode (childrens (getNode trie head)) tail
 	| otherwise = (Node {element = ' ', path = [], childrens = []})
 
---	Función que agrega una ruta a un nodo en un trie, utilizando el identificador que se pasa como parámetro
+--	Función que agrega una ruta a un nodo en un trie, utilizando el identificador que le estoy dando como parámetro
 addPathToNode :: Trie -> [Char] -> String -> Trie
-addPathToNode trie [letter] dir
+addPathToNode trie [] dir = trie
+addPathToNode trie [letter] dir 
 	| verifyNode trie letter = addPath (getNode trie letter) dir : (ignoreNode trie letter)
 	| otherwise = trie
 addPathToNode trie (head : tail) dir
 	| verifyNode trie head = (getNode trie head) { element = element (getNode trie head), path = path (getNode trie head), childrens = addPathToNode (childrens (getNode trie head)) tail dir } : (ignoreNode trie head)
 	| otherwise = trie
 
---Función que verifia si una palabra se encuentra en el árbol
 contains :: Trie -> [Char] -> Bool
 contains trie [] = True
 contains trie (head : tail)
 	| verifyNode trie head = True && contains (childrens (getNode trie head)) tail
 	| otherwise = False
 
---Función que verifia si una ruta se encuentra en el nodo de la palabra que se ingresa de paramatro
 containsPath :: Trie -> [Char] -> String -> Bool
 containsPath trie [] directory = False
 containsPath trie (head : tail) directory
  	| noExisteEn (path (getNode trie head)) directory = containsPath (childrens(getNode trie head)) tail directory
  	| otherwise = True
 
---Función que verifica si no existe un elemento en una lista
+
 noExisteEn [] elemento = True
 noExisteEn (cabeza : cola) elemento =
   if cabeza == elemento
   then False
-  else noExisteEn cola elemento
+  else noExisteEn cola elemento 
+
+existeEn [] elemento = True
+existeEn (cabeza : cola) elemento =
+  if cabeza == elemento
+  then False
+  else existeEn cola elemento  
